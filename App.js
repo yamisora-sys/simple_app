@@ -5,7 +5,7 @@ import Healthy from "./src/pages/Healthy.js";
 
 export default function App() {
   return (
-    <View>
+    <View style={styles.container}>
       <PostList />
       </View>
   );
@@ -13,7 +13,6 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "aliceblue",
     alignItems: "center",
     width: "100%",
   },

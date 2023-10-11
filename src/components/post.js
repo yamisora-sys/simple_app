@@ -12,7 +12,7 @@ export default function Post(props) {
     <View style={styles.post}>
       <View style={styles.user}>
         <Image
-          style={{ width: 50, height: 50, borderRadius: 50 }}
+          style={{ width: 50, height: 50, borderRadius: 50, borderColor:"hotpink", borderWidth:"1px" }}
           source={{ uri: props.avatar }}
         />
         <Text style={styles.username}> {props.author} </Text>
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   post: {
     marginTop: 10,
     marginBottom: 10,
-    width: "80%",
+    width: "100%",
     borderWidth: 1,
     borderRadius: 10,
     borderColor: "pink",

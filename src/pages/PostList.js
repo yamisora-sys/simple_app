@@ -6,7 +6,7 @@ import Post from "../components/post.js";
 
 export default function PostList() {
   return (
-    <SafeAreaView>
+    <View style={styles.container}>
       <StatusBar style="auto" />
       <Navbar />
       <ScrollView>
@@ -16,7 +16,7 @@ export default function PostList() {
           })}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -25,4 +25,9 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
   },
+  container:{
+    backgroundColor: "aliceblue",
+    alignItems: "center",
+    width: "100%",
+  }
 });
