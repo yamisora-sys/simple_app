@@ -1,18 +1,69 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity, Pressable} from "react-native";
-import Icon  from 'react-native-vector-icons/FontAwesome'
-import {useState} from 'react'
-import useLike from '../hooks/useLike.js'
-import useComment from '../hooks/useComment.js'
-import useShare from '../hooks/useShare.js'
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Pressable,
+} from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
+import { useState } from "react";
+import useLike from "../hooks/useLike.js";
+import useComment from "../hooks/useComment.js";
+import useShare from "../hooks/useShare.js";
+import PostButton from "./PostButton.js";
 export default function Post(props) {
-    const {like, isLike, setLike, setisLike} = useLike(props.like, props.isLike)
-    const {comment, isComment, setComment, setisComment} = useComment(props.comment, props.isComment)
-    const {share, isShare, setShare, setisShare} = useShare(props.share, props.isShare)
+  const { like, isLike, setLike, setisLike } = useLike(
+    props.like,
+    props.isLike
+  );
+  const { comment, isComment, setComment, setisComment } = useComment(
+    props.comment,
+    props.isComment
+  );
+  const { share, isShare, setShare, setisShare } = useShare(
+    props.share,
+    props.isShare
+  );
+
+  const LikeAction = () => {
+    if (isLike) {
+      setLike(like - 1);
+    } else {
+      setLike(like + 1);
+    }
+    setisLike(!isLike);
+  };
+
+  const CommentAction = () => {
+    if (isComment) {
+      setComment(comment - 1);
+    } else {
+      setComment(comment + 1);
+    }
+    setisComment(!isComment);
+  }
+
+  const ShareAction = () =>{
+    if (isShare) {
+      setShare(share - 1);
+    } else {
+      setShare(share + 1);
+    }
+    setisShare(!isShare);
+  }
+
   return (
     <View style={styles.post}>
       <View style={styles.user}>
         <Image
-          style={{ width: 50, height: 50, borderRadius: 50, borderColor:"hotpink", borderWidth:"1px" }}
+          style={{
+            width: 50,
+            height: 50,
+            borderRadius: 50,
+            borderColor: "hotpink",
+            borderWidth: "1px",
+          }}
           source={{ uri: props.avatar }}
         />
         <Text style={styles.username}> {props.author} </Text>
@@ -32,49 +83,10 @@ export default function Post(props) {
         <Text>{share} Share</Text>
       </View>
       <View style={styles.action}>
-        
-        <Pressable style={styles.actionlike} onPress={()=>{
-            if(isLike){
-                setLike(like-1)
-            }
-            else{
-                setLike(like+1)
-            }
-            setisLike(!isLike)
-        }}>
-            <Icon name="heart" size={20} color="pink" />
-            <Text >Like</Text>
-        </Pressable>
-        
-        
-        <Pressable style={styles.actioncomment} onPress={()=>{
-            if(isComment){
-                setComment(comment-1)
-            }
-            else{
-                setComment(comment+1)
-            }
-            setisComment(!isComment)
-        }}>
-            <Icon name="comment" size={20} color="blue" />
-            <Text >Comment</Text>
-        </Pressable>
-        
-        
-        <Pressable style={styles.actionshare} onPress={()=>{
-            if(isShare){
-                setShare(share-1)
-            }
-            else{
-                setShare(share+1)
-            }
-            setisShare(!isShare)
-        }}>
-            <Icon name="share" size={20} color="pink" />
-            <Text>Share</Text>
-        </Pressable>
-        
-    </View>
+          <PostButton icon="heart" text="like" handleOnClick={LikeAction} color="hotpink"/>
+          <PostButton icon="comment" text="comment" handleOnClick={CommentAction} color="blue"/>
+          <PostButton icon="share" text="share" handleOnClick={ShareAction} color="red"/>
+      </View>
     </View>
   );
 }
@@ -117,23 +129,11 @@ const styles = StyleSheet.create({
   },
   action: {
     paddingTop: 10,
-    width: '100%',
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      marginTop: 10,
-      borderTopWidth: 1,
-      borderColor: 'pink',
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 10,
+    borderTopWidth: 1,
+    borderColor: "pink",
   },
-    actionlike: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    actioncomment: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    actionshare: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    }
 });
