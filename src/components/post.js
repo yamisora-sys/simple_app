@@ -1,18 +1,19 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity, Pressable} from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity, Pressable, SafeAreaView} from "react-native";
 import Icon  from 'react-native-vector-icons/FontAwesome'
 import {useState} from 'react'
 import useLike from '../hooks/useLike.js'
 import useComment from '../hooks/useComment.js'
 import useShare from '../hooks/useShare.js'
+
 export default function Post(props) {
     const {like, isLike, setLike, setisLike} = useLike(props.like, props.isLike)
     const {comment, isComment, setComment, setisComment} = useComment(props.comment, props.isComment)
     const {share, isShare, setShare, setisShare} = useShare(props.share, props.isShare)
   return (
-    <View style={styles.post}>
+    <SafeAreaView style={styles.post}>
       <View style={styles.user}>
         <Image
-          style={{ width: 50, height: 50, borderRadius: 50, borderColor:"hotpink", borderWidth:"1px" }}
+          style={{ width: 50, height: 50, borderRadius: 50, borderColor:"hotpink", borderWidth:1 }}
           source={{ uri: props.avatar }}
         />
         <Text style={styles.username}> {props.author} </Text>
@@ -75,7 +76,7 @@ export default function Post(props) {
         </Pressable>
         
     </View>
-    </View>
+    </SafeAreaView>
   );
 }
 

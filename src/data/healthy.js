@@ -1,12 +1,12 @@
 export const fruits_vegetables = [
     {
         title: 'Fruits',
-        img: '',
+        img: 'https://wallpapers.com/images/hd/aesthetic-cat-pictures-e5to7560s6qklp0i.jpg',
         data: ['Banana', 'Apple', 'Orange', 'Grapes', 'Mango', 'Pineapple', 'Watermelon', 'Strawberry', 'Cherry', 'Peach', 'Pear', 'Plum', 'Kiwi', 'Lemon', 'Lime', 'Coconut', 'Avocado', 'Pomegranate', 'Cantaloupe', 'Fig', 'Grapefruit', 'Tangerine', 'Raspberry', 'Blackberry', 'Blueberry', 'Cranberry', 'Apricot', 'Papaya', 'Necta'],
     },
     {
         title: 'Vegetables',
-        img: '',
+        img: 'https://wallpapers.com/images/hd/aesthetic-cat-pictures-e5to7560s6qklp0i.jpg',
         data: ['Carrot', 'Potato', 'Tomato', 'Onion', 'Cucumber', 'Cabbage', 'Broccoli', 'Pumpkin', 'Spinach', 'Pepper', 'Garlic', 'Celery', 'Cauliflower', 'Corn', 'Eggplant', 'Green bean', 'Lettuce', 'Mushroom', 'Radish', 'Zucchini', 'Asparagus', 'Beetroot', 'Brussels sprout', 'Chili pepper', 'Leek', 'Olive', 'Parsley', 'Pea', 'Turnip'],
     }
 ]
@@ -23,7 +23,7 @@ export const workouts = [
     {
         id: 3,
         type: 'Planks'
-    }
+    },
     {
         id: '4',
         type: 'Groiner',

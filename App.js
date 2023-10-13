@@ -5,15 +5,15 @@ import Healthy from "./src/pages/Healthy.js";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <PostList />
-      </View>
+    <View style={styles.body}>
+      {/* <PostList /> */}
+      <Healthy />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  body: {
     alignItems: "center",
-    width: "100%",
   },
 });
