@@ -62,7 +62,7 @@ export default function Post(props) {
             height: 50,
             borderRadius: 50,
             borderColor: "hotpink",
-            borderWidth: "1px",
+            borderWidth: 1,
           }}
           source={{ uri: props.avatar }}
         />
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   post: {
     marginTop: 10,
     marginBottom: 10,
-    width: "100%",
+    width: "80%",
     borderWidth: 1,
     borderRadius: 10,
     borderColor: "pink",

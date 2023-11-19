@@ -6,6 +6,6 @@ import { Index } from "./src/pages/3/index.js";
 
 export default function App() {
   return (
-      <Index />
+      <PostList />
   );
 }
