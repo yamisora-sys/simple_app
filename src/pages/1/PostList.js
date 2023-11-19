@@ -1,8 +1,8 @@
 import { StatusBar } from "expo-status-bar";
 import { Text, View, StyleSheet, ScrollView, SafeAreaView } from "react-native";
-import Navbar from "../components/navbar.js";
-import { posts } from "../data/post.js";
-import Post from "../components/post.js";
+import Navbar from "../../components/1/navbar.js";
+import { posts } from "../../data/post.js";
+import Post from "../../components/1/post.js";
 
 export default function PostList() {
   return (

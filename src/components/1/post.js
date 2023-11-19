@@ -8,9 +8,9 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useState } from "react";
-import useLike from "../hooks/useLike.js";
-import useComment from "../hooks/useComment.js";
-import useShare from "../hooks/useShare.js";
+import useLike from "../../hooks/useLike.js";
+import useComment from "../../hooks/useComment.js";
+import useShare from "../../hooks/useShare.js";
 import PostButton from "./PostButton.js";
 export default function Post(props) {
   const { like, isLike, setLike, setisLike } = useLike(
