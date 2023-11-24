@@ -3,4 +3,11 @@ export const UserData = [{
     password: "20520930",
     username: "yamisora",
     favorite: 4,
-}]
+},
+{
+    email: "yamisora",
+    password: "1",
+    username: "yamisora",
+    favorite: 2,
+}
+]

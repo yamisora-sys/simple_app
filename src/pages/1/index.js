@@ -1,5 +1,5 @@
 
-import { CurrentUserProvider, CurrentUserContext, UserProvider } from "../../context/userContext.js";
+import { CurrentUserProvider, CurrentUserContext, UserProvider, ScreenHeaderProvider } from "../../context/userContext.js";
 import { NavigationContainer } from "@react-navigation/native";
 import {useState, useContext} from 'react'
 import { MainScreen } from "./mainscreen.js";
@@ -9,6 +9,7 @@ export function Index() {
     <NavigationContainer>
       <UserProvider>
         <CurrentUserProvider>
+          <ScreenHeaderProvider>
         <CurrentUserContext.Consumer>
           {
             ([currentUser, setCurrentUser]) => {
@@ -16,6 +17,7 @@ export function Index() {
             }
           }
         </CurrentUserContext.Consumer>
+          </ScreenHeaderProvider>
         </CurrentUserProvider>
       </UserProvider>
     </NavigationContainer>

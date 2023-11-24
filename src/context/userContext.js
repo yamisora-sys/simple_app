@@ -1,5 +1,6 @@
 import {createContext, useState} from 'react';
 import {UserData} from '../data/user.js';
+
 export const UserContext = createContext([]);
 
 export const UserProvider = ({children}) =>{
@@ -18,6 +19,33 @@ export const CurrentUserProvider = ({children}) => {
         <CurrentUserContext.Provider value={[currentUser, setCurrentUser]}>
             {children}
         </CurrentUserContext.Provider>
+    )
+}
+
+export const CurrentUserConsumer = ({children}) => {
+    return (
+        <CurrentUserContext.Consumer>
+            {children}
+        </CurrentUserContext.Consumer>
+    )
+}
+
+export const ScreenHeaderContext = createContext(null);
+
+export const ScreenHeaderProvider = ({children}) => {
+    const [screenHeader, setScreenHeader] = useState(true);
+    return (
+        <ScreenHeaderContext.Provider value={[screenHeader, setScreenHeader]}>
+            {children}
+        </ScreenHeaderContext.Provider>
+    )
+}
+
+export const ScreenHeaderConsumer = ({children}) => {
+    return (
+        <ScreenHeaderContext.Consumer>
+            {children}
+        </ScreenHeaderContext.Consumer>
     )
 }
 
