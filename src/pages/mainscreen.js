@@ -4,15 +4,27 @@ import {Home} from './main/Home.js';
 import {Profile} from './main/Profile.js';
 import {Favorite} from './main/Favorite.js';
 import {Category} from './main/Category.js';
-import { CurrentUserContext } from "../../context/userContext.js";
+import { CurrentUserContext } from "@context/userContext.js";
 import {useContext} from 'react'
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { ProductDetail } from './product/ProductDetail.js';
+const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 export function MainScreen(){
+    return (
+        <Stack.Navigator>
+            <Stack.Screen name="BottomTab" component={BottomTab} options={{headerShown: false}}/>
+            <Stack.Screen name="ProductDetail" component={ProductDetail} options={{headerShown: true}}/>
+        </Stack.Navigator>
+    )
+}
+
+const BottomTab = () => {
     const [currentUser, setCurrentUser] = useContext(CurrentUserContext)
     return (
         <Tab.Navigator
             screenOptions={{
-                headerShown: false,
+                headerShown: true,
                 tabBarActiveTintColor: 'hotpink',
                 tabBarInactiveTintColor: 'gray',
                 tabBarStyle: {
@@ -42,8 +54,6 @@ export function MainScreen(){
                         <Icon name="heart" color={color} size={size} />
                     ),
                     badgeStyle: {backgroundColor: 'red'},
-                    // get value
-                    tabBarBadge: currentUser.favorite, 
                 }}
             />
             <Tab.Screen name="Profile" component={Profile} 
@@ -55,5 +65,4 @@ export function MainScreen(){
             />
         </Tab.Navigator>
     )
-
 }

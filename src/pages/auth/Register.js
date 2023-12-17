@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TextInput, Image, Button, Alert, Pressable } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import {useState, useContext} from 'react';
-import { UserContext, getUser, CurrentUserContext } from "../../../context/userContext.js";
+import { UserContext, getUser, CurrentUserContext } from "@context/userContext.js";
 import { styles } from "./styles.js";
 
 export function Register({navigation}) {
@@ -41,7 +41,7 @@ export function Register({navigation}) {
       <View style={styles.header}>
         <Image
           style={styles.headerimg}
-          source={require("../../../img/react-icon.png")}
+          source={require("@img/react-icon.png")}
         />
         <Text style={[styles.headertitle]}>Create New Account</Text>
       </View>

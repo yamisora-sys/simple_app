@@ -1,12 +1,16 @@
 
-import { CurrentUserProvider, CurrentUserContext, UserProvider } from "../../context/userContext.js";
+import { CurrentUserProvider, CurrentUserContext, UserProvider } from "@context/userContext.js";
 import { NavigationContainer } from "@react-navigation/native";
 import {useState, useContext} from 'react'
 import { MainScreen } from "./mainscreen.js";
 import { Auth } from "./Auth.js";
+import {store} from '@utils/store.js';
+import  {Provider} from 'react-redux';
+
 export function Index() {
   return (
     <NavigationContainer>
+      <Provider store={store}>
       <UserProvider>
         <CurrentUserProvider>
         <CurrentUserContext.Consumer>
@@ -18,6 +22,7 @@ export function Index() {
         </CurrentUserContext.Consumer>
         </CurrentUserProvider>
       </UserProvider>
+      </Provider>
     </NavigationContainer>
   );
 }

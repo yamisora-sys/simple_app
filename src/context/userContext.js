@@ -21,6 +21,7 @@ export const CurrentUserProvider = ({children}) => {
     )
 }
 
-export function getUser(user, email){
-    return user.filter((item) => item.email == email)[0];
+export function getUser(user, username){
+    return user.filter((item) => item.username == username)[0];
 }
+

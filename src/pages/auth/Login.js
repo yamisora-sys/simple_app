@@ -1,21 +1,21 @@
 import { View, Text, StyleSheet, TextInput, Image, Button, Alert, Pressable } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import {useState, useContext} from 'react';
-import { UserContext, getUser, CurrentUserContext } from "../../../context/userContext.js";
+import { UserContext, getUser, CurrentUserContext } from "@context/userContext.js";
 import { styles } from "./styles.js";
 
 export function Login({navigation}) {
-    const [email, setEmail] = useState(null);
+    const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
     const [listUser, setUser] = useContext(UserContext);
     const [currentUser, setCurrentUser] = useContext(CurrentUserContext);
     const auth = () =>{
-      if(email != null || password != null){
-        let userInfo = getUser(listUser, email);
+      if(username != null || password != null){
+        let userInfo = getUser(listUser, username);
         if (userInfo == null){
           Alert.alert("User not found")
         }
-        else if(email == userInfo.email && password == userInfo.password){
+        else if(username == userInfo.username && password == userInfo.password){
             console.log("Login success");
             Alert.alert("Login success");
             // change context value
@@ -28,7 +28,7 @@ export function Login({navigation}) {
         }
       }
       else {
-        Alert.alert("Please enter email and password");
+        Alert.alert("Please enter username and password");
       }
     }
   return (
@@ -36,7 +36,7 @@ export function Login({navigation}) {
       <View style={styles.header}>
         <Image
           style={styles.headerimg}
-          source={require("../../../img/react-icon.png")}
+          source={require("@img/logo.jpg")}
         />
         <Text style={[styles.headertitle]}>Welcome</Text>
       </View>
@@ -45,9 +45,9 @@ export function Login({navigation}) {
           <Icon style={styles.icon} name="envelope-square" size={20} color="black" />
           <TextInput
             style={styles.input}
-            placeholder="email"
+            placeholder="username"
             placeholderTextColor="black"
-            onChangeText={setEmail}
+            onChangeText={setUsername}
           />
         </View>
         <View style={styles.display}>
@@ -64,8 +64,8 @@ export function Login({navigation}) {
         <Button style={styles.btnLogin} title="Login" color="orange" onPress={auth}/>
         <Text style={styles.headertitle}>Or Login With </Text>
         <View style={styles.option}>
-            <Image style={styles.img} source={require("../../../img/facebook.png")} />
-            <Image style={styles.img} source={require("../../../img/google.png")} />
+            <Image style={styles.img} source={require("@img/facebook.png")} />
+            <Image style={styles.img} source={require("@img/google.png")} />
         </View>
         <Pressable onPress={() => navigation.navigate('Register')}>
           <Text style={styles.headertitle}>Don't have an account? 
