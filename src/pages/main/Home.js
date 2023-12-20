@@ -24,15 +24,30 @@ export function Home({navigation}) {
     <Loading />
   ) : (
     <ScrollView contentContainerStyle={{
-      justifyContent: "center",
-      alignItems: "center",
       backgroundColor: "#badcfa",
-      paddingBottom: 100
+      padding: 10
     }}>
-      <View style={styles.container}>
+      <View>
         <Banner />
+        <Text style={{ fontSize: 20, fontWeight: "bold", color: "red" }}>
+          Hot Production
+        </Text>
         <View style={styles.production}>
-          {production.map((item, index) => {
+          {hotProduction.map((item, index) => {
+            return (
+              <View style={styles.productionItem}>
+                <TouchableOpacity onPress={() => navigation.navigate("ProductDetail", {data: item})}>
+                  <ProductItem data={item} key={item.id} />
+                </TouchableOpacity>
+              </View>
+            );
+          })}
+        </View>
+        <Text style={{ fontSize: 20, fontWeight: "bold", color: "red" }}>
+          New Production
+        </Text>
+        <View style={styles.production}>
+          {newProduction.map((item, index) => {
             return (
               <View style={styles.productionItem}>
                 <TouchableOpacity onPress={() => navigation.navigate("ProductDetail", {data: item})}>
@@ -61,7 +76,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "space-around",
     alignItems: "center",
-    height: "100%",
+    height: "70%",
     width: "100%",
   },
   productionItem: {

@@ -1,36 +1,45 @@
 import { View, Text, StyleSheet, TextInput, Image, Button, Alert, Pressable } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-import {useState, useContext} from 'react';
-import { UserContext, getUser, CurrentUserContext } from "@context/userContext.js";
+import {useState, useEffect} from 'react';
+import { useCurrentUser } from "@context/userContext.js";
 import { styles } from "./styles.js";
+import { useDispatch, useSelector } from "react-redux";
+import { Auth, UserLogin, getUserById } from "@utils/reducer/user.js";
+import {UserData} from "@data/user.js";
 
 export function Login({navigation}) {
-    const [username, setUsername] = useState(null);
-    const [password, setPassword] = useState(null);
-    const [listUser, setUser] = useContext(UserContext);
-    const [currentUser, setCurrentUser] = useContext(CurrentUserContext);
-    const auth = () =>{
-      if(username != null || password != null){
-        let userInfo = getUser(listUser, username);
-        if (userInfo == null){
-          Alert.alert("User not found")
-        }
-        else if(username == userInfo.username && password == userInfo.password){
-            console.log("Login success");
-            Alert.alert("Login success");
-            // change context value
-            setCurrentUser(userInfo);
-            console.log(currentUser);
+  // pass: m38rmF$
+  // username: johnd
+    const [username, setUsername] = useState('johnd');
+    const [password, setPassword] = useState('m38rmF$');
+    const [data, setData] = useState(UserData);
+    const dispatch = useDispatch();
+    const state = useSelector((state) => state.user);
+    const {user, userId} = state;
+    const [currentUser, setCurrentUser] = useCurrentUser();
+
+    const auth = async () =>{
+      if (currentUser == null){
+        if (username == null && password == null){
+          Alert.alert("Error", "Username or password is empty")
         }
         else{
-            console.log("Login failed");
-            Alert.alert("Email or Password is invalid");
+          setData({...data, username: username})
+          await dispatch(UserLogin({username: username, password: password}))
+          await setCurrentUser(user)
+          Alert.alert("Success", "Login success")
+          console.log(currentUser)
         }
       }
-      else {
-        Alert.alert("Please enter username and password");
+      else{
+        dispatch(Auth(currentUser))
       }
     }
+  useEffect(() => {
+    if (user){
+      setCurrentUser(user)
+    }
+  })
   return (
     <View style={styles.container}>
       <View style={styles.header}>

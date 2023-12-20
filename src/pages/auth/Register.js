@@ -1,41 +1,31 @@
 import { View, Text, StyleSheet, TextInput, Image, Button, Alert, Pressable } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-import {useState, useContext} from 'react';
-import { UserContext, getUser, CurrentUserContext } from "@context/userContext.js";
+import {useState, useEffect} from 'react';
+import { useCurrentUser } from "@context/userContext.js";
 import { styles } from "./styles.js";
+import { useDispatch, useSelector } from "react-redux";
+import { UserRegister } from "@utils/reducer/user.js";
+import { UserData } from "@data/user.js";
 
 export function Register({navigation}) {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [comfirmPassword, setComfirmPassword] = useState("");
-    const [userName, setUserName] = useState("");
-    const [user, setUser] = useContext(UserContext);
-    const [currentUser, setCurrentUser] = useContext(CurrentUserContext);
-    const register = () => {
-      let userInfo = getUser(user, email);
-      if(email != "" || password != "" || comfirmPassword != "" || userName != ""){
-        if(userInfo != null){
-          Alert.alert("Email is already exist");
-        }
-        else if(password == comfirmPassword){
-          let userInfo = {
-            email: email,
-            password: password,
-            username: userName,
-            favorite: Math.floor(Math.random() * 100) + 1,
-          }
-          setUser([...user, userInfo]);
-          Alert.alert("Register success");
-          navigation.navigate('Login');
-        }
-        else{
-          Alert.alert("Comfirm password is invalid");
-        }
+    const [data, setData] = useState(UserData);
+    const dispatch = useDispatch();
+    const state = useSelector((state) => state.user);
+    const {user, userId} = state;
+    const [currentUser, setCurrentUser] = useCurrentUser();
+    const register = async () => {
+      if (data == null){
+        Alert.alert("Error", "Please fill all the form")
       }
       else{
-        Alert.alert("Please enter all information");
+        await dispatch(UserRegister(data))
+        await setCurrentUser(data)
+        console.log(user)
+        console.log(currentUser)
+        Alert.alert("Success", "Login success")
       }
     }
+  
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -52,7 +42,9 @@ export function Register({navigation}) {
             style={styles.input}
             placeholder="User Name"
             placeholderTextColor="black"
-            onChangeText={setUserName}
+            onChangeText={(text)=>{
+              setData({...data, username: text})
+            }}
           />
         </View>
         <View style={styles.display}>
@@ -61,7 +53,9 @@ export function Register({navigation}) {
             style={styles.input}
             placeholder="email"
             placeholderTextColor="black"
-            onChangeText={setEmail}
+            onChangeText={(text)=>{
+              setData({...data, email: text})
+            }}
           />
         </View>
         <View style={styles.display}>
@@ -70,17 +64,9 @@ export function Register({navigation}) {
             style={styles.input}
             placeholder="password"
             placeholderTextColor="black"
-            onChangeText={setPassword}
-            secureTextEntry={true}
-          />
-        </View>
-        <View style={styles.display}>
-          <Icon style={styles.icon} name="unlock-alt" size={25} color="black" />
-          <TextInput
-            style={styles.input}
-            placeholder="comfirm password"
-            placeholderTextColor="black"
-            onChangeText={setComfirmPassword}
+            onChangeText={(text)=>{
+              setData({...data, password: text})
+            }}
             secureTextEntry={true}
           />
         </View>

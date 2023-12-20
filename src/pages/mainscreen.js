@@ -1,8 +1,8 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Home} from './main/Home.js';
-import {Profile} from './main/Profile.js';
-import {Favorite} from './main/Favorite.js';
+import Profile from './main/profile/index.js';
+import {Cart} from './main/Cart.js';
 import {Category} from './main/Category.js';
 import { CurrentUserContext } from "@context/userContext.js";
 import {useContext} from 'react'
@@ -48,7 +48,7 @@ const BottomTab = () => {
                     )
                 }}
             />
-            <Tab.Screen name="Favorite" component={Favorite} 
+            <Tab.Screen name="Cart" component={Cart} 
                 options= {{
                     tabBarIcon: ({color, size}) => (
                         <Icon name="heart" color={color} size={size} />

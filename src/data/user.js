@@ -1,4 +1,4 @@
-export const UserData = [
+export const UserData = 
   {
     email:'mike@gmail.com',
     username:'yamisora',
@@ -18,11 +18,4 @@ export const UserData = [
         }
     },
     phone:'1-570-236-7033'
-},
-  {
-    email: "a",
-    password: "a",
-    username: "a",
-    favorite: 4,
-  },
-];
+}

@@ -14,11 +14,6 @@ export function Category (){
     const {categories} = state
     useEffect(() => {
         dispatch(fetchCategories())
-        if (categories.length > 0) {
-            categories.map((item) => {
-                dispatch(fetchProductionByCategory(item))
-            })
-        }
     }, [dispatch])
     if(state.loading) return <Loading/>
     return (
@@ -40,6 +35,7 @@ const CategoryItem = ({route, navigation}) => {
     const state = useSelector(state => state.category)
     const {productionByCategory} = state
     const data = productionByCategory[name]
+
     if(!state.loading) {
         return (
             <ScrollView contentContainerStyle={{

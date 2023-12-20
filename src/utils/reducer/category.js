@@ -6,7 +6,15 @@ export const fetchCategories = createAsyncThunk(
     'category/fetchall',
     async () => {
         const response = await getCategories().then(res => res);
-        return response;
+        var data = {
+            category: response
+        }
+        await Promise.all(response.map(async (item) => {
+            const production = await getProductionByCategory(item).then(res => res);
+            data[item] = production;
+        }));
+        console.log(data);
+        return data;
     }
 );
 
@@ -37,24 +45,11 @@ export const categorySlice = createSlice({
             })
             .addCase(fetchCategories.fulfilled, (state, action) => {
                 state.loading = false;
-                state.categories = action.payload;
+                categories = action.payload.category;
+                state.categories = categories;
+                state.productionByCategory = action.payload;
             })
             .addCase(fetchCategories.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.error.message;
-            });
-        builder
-            .addCase(fetchProductionByCategory.pending, (state) => {
-                state.loading = true;
-            })
-            .addCase(fetchProductionByCategory.fulfilled, (state, action) => {
-                state.loading = false;
-                state.productionByCategory = {
-                    ...state.productionByCategory,
-                    [action.payload.category]: action.payload.production
-                };
-            })
-            .addCase(fetchProductionByCategory.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             });
