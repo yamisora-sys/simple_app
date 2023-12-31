@@ -1,3 +1,4 @@
+// src/pages/auth/Login.js
 import { View, Text, StyleSheet, TextInput, Image, Button, Alert, Pressable } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import {useState, useEffect} from 'react';
@@ -25,8 +26,8 @@ export function Login({navigation}) {
         }
         else{
           setData({...data, username: username})
-          await dispatch(UserLogin({username: username, password: password}))
-          await setCurrentUser(user)
+          dispatch(UserLogin({username: username, password: password}))
+          setCurrentUser(user)
           Alert.alert("Success", "Login success")
           console.log(currentUser)
         }

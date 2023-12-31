@@ -1,3 +1,4 @@
+// src/pages/product/ProductDetail.js
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useLayoutEffect} from 'react';

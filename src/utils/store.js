@@ -1,3 +1,4 @@
+// src/utils/store.js
 import {configureStore} from '@reduxjs/toolkit';
 
 import productionReducer from '@utils/reducer/production';

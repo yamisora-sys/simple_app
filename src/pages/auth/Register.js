@@ -1,3 +1,4 @@
+// src/pages/auth/Register.js
 import { View, Text, StyleSheet, TextInput, Image, Button, Alert, Pressable } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import {useState, useEffect} from 'react';

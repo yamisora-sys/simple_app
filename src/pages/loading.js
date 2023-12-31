@@ -1,3 +1,4 @@
+// src/pages/loading.js
 import {Image, StyleSheet} from 'react-native';
 
 export function Loading() {

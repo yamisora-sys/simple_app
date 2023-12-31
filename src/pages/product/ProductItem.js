@@ -1,3 +1,4 @@
+// src/pages/product/ProductItem.js
 import {Text, View, Button, Image, StyleSheet, TouchableOpacity, Alert} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useDispatch, useSelector} from 'react-redux'

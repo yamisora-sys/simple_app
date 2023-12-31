@@ -1,3 +1,4 @@
+// src/pages/mainscreen.js
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Home} from './main/Home.js';
@@ -5,11 +6,12 @@ import Profile from './main/profile/index.js';
 import {Cart} from './main/Cart.js';
 import {Category} from './main/Category.js';
 import { CurrentUserContext } from "@context/userContext.js";
-import {useContext} from 'react'
+import {useContext, useEffect, useState} from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ProductDetail } from './product/ProductDetail.js';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+import {useSelector} from 'react-redux'
 export function MainScreen(){
     return (
         <Stack.Navigator>
@@ -21,6 +23,18 @@ export function MainScreen(){
 
 const BottomTab = () => {
     const [currentUser, setCurrentUser] = useContext(CurrentUserContext)
+    const [totalCart, setTotalCart] = useState(0)
+    const state = useSelector(state => state.user)
+    const {cart, loading} = state
+    if (loading){
+        return <Loading />
+    }
+    useEffect(() => {
+        if(cart){
+            setTotalCart(cart.products ? cart.products.length : 0)
+        }
+
+    }, [cart])
     return (
         <Tab.Navigator
             screenOptions={{
@@ -51,8 +65,9 @@ const BottomTab = () => {
             <Tab.Screen name="Cart" component={Cart} 
                 options= {{
                     tabBarIcon: ({color, size}) => (
-                        <Icon name="heart" color={color} size={size} />
+                        <Icon name="shopping-cart" color={color} size={size} />
                     ),
+                    tabBarBadge: totalCart,
                     badgeStyle: {backgroundColor: 'red'},
                 }}
             />

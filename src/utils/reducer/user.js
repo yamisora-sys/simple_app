@@ -1,3 +1,4 @@
+// src/utils/reducer/user.js
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import {login, getUser, createUser, addToCart, getUserCart, createCart, getProductionById} from '@utils/api/baseAPI';
 import { fetchProduction } from './production';

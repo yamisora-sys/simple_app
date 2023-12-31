@@ -1,3 +1,4 @@
+// src/pages/main/Category.js
 import {Text, View, ScrollView, StyleSheet, TouchableOpacity} from 'react-native'
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs'
 import {useDispatch, useSelector} from 'react-redux'
@@ -18,7 +19,14 @@ export function Category (){
     if(state.loading) return <Loading/>
     return (
         categories.length > 0 && (
-            <Tab.Navigator >
+            <Tab.Navigator
+            screenOptions={{
+              tabBarLabelStyle: { fontSize: 10 },
+              tabBarItemStyle: { width: 90 },
+              tabBarStyle: { backgroundColor: 'powderblue' },
+            }}
+            >
+                <Tab.Screen name="All" component={ALlProduction}/>
                 {categories.map((item, index) => {
                     return (
                         <Tab.Screen name={item} component={CategoryItem} key={index}/>
@@ -27,6 +35,36 @@ export function Category (){
             </Tab.Navigator>
         )
     )
+}
+
+const ALlProduction = ({navigation}) => {
+  const state = useSelector(state => state.production)
+  const {production} = state
+  if(!state.loading) {
+    return (
+      <ScrollView contentContainerStyle={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#badcfa",
+        paddingBottom: 100
+      }}>
+        <View style={styles.container}>
+          <View style={styles.production}>
+            {production.map((item, index) => {
+              return (
+                <View style={styles.productionItem}>
+                  <TouchableOpacity onPress={() => navigation.navigate("ProductDetail", {data: item})}>
+                    <ProductItem data={item} key={item.id} />
+                  </TouchableOpacity>
+                </View>
+              );
+            })}
+          </View>
+        </View>
+      </ScrollView>
+    );
+  }
 }
 
 const CategoryItem = ({route, navigation}) => {

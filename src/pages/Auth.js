@@ -1,3 +1,4 @@
+// src/pages/Auth.js
 import { Login } from "./auth/Login.js";
 import { Register } from "./auth/Register.js";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";

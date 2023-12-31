@@ -1,16 +1,6 @@
+// src/context/userContext.js
 import {createContext, useState} from 'react';
-import {UserData} from '../data/user.js';
 import {useContext} from 'react';
-export const UserContext = createContext([]);
-
-export const UserProvider = ({children}) =>{
-    const [user, setUser] = useState(UserData);
-    return (
-        <UserContext.Provider value={[user, setUser]}>
-            {children}
-        </UserContext.Provider>
-    )
-}
 
 export const CurrentUserContext = createContext();
 export const CurrentUserProvider = ({children}) => {
@@ -23,8 +13,3 @@ export const CurrentUserProvider = ({children}) => {
 }
 
 export const useCurrentUser = () => useContext(CurrentUserContext);
-
-export function getUser(user, username){
-    return user.filter((item) => item.username == username)[0];
-}
-

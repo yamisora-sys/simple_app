@@ -1,3 +1,4 @@
+// src/pages/main/Profile/EditProfile.js
 import { updateUser } from '@utils/reducer/user.js';
 import {useDispatch, useSelector} from 'react-redux';
 import {useState, useEffect} from 'react';

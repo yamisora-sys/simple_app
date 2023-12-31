@@ -1,16 +1,16 @@
+// src/pages/main/Profile/Profile.js
 import {Text, View, Button, StyleSheet, Image, TouchableOpacity} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import {useCurrentUser} from '@context/userContext.js'
 import {Logout} from '@utils/reducer/user.js'
 import {useDispatch, useSelector} from 'react-redux'
-
+import {Loading } from '@pages/loading.js'
 export function Profile({navigation}) {
     const [currentUser, setCurrentUser] = useCurrentUser();
     const dispatch = useDispatch();
     const state = useSelector((state) => state.user);
     const {user, userId} = state;
     console.log(user)
-
     return (
     <View style={styles.container}>
         <View style={styles.header}>

@@ -1,3 +1,4 @@
+// src/pages/main/Home.js
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import {

@@ -1,3 +1,4 @@
+// src/data/user.js
 export const UserData = 
   {
     email:'mike@gmail.com',

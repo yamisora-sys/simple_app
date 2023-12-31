@@ -1,3 +1,4 @@
+// src/pages/main/Profile/index.js
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Profile } from './Profile.js';
 import { EditProfile } from './EditProfile.js';

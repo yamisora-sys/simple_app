@@ -1,3 +1,4 @@
+// src/utils/reducer/category.js
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import {getCategories, getProductionByCategory} from '@utils/api/baseAPI.js';
 

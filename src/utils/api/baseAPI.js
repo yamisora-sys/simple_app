@@ -1,3 +1,4 @@
+// src/utils/api/baseAPI.js
 import {jwtDecode} from 'jwt-decode'
 import {decode} from 'base-64'
 const baseUrl = 'https://fakestoreapi.com/'
