@@ -1,9 +1,5 @@
 import { Alert, Image, StyleSheet, View, Text } from 'react-native';
-import {
-  launchCameraAsync,
-  useCameraPermissions,
-  PermissionStatus,
-} from 'expo-image-picker';
+import { launchCameraAsync, launchImageLibraryAsync, useCameraPermissions, PermissionStatus } from 'expo-image-picker';
 import { Colors } from '../../utils/constants';
 import OutlinedButton from '../UI/OutlinedButton';
 
@@ -37,6 +33,19 @@ export default function ImagePicker({ imageUri, setImageUri }) {
     }
   }
 
+  async function pickImageHandler() {
+    if (await verifyPermissions()) {
+      const image = await launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [16, 9],
+        quality: 0.5,
+      });
+      const uri =
+        image?.assets && image.assets[0] ? image.assets[0].uri : undefined;
+      setImageUri(uri);
+    }
+  }
+
   return (
     <View>
       <View style={styles.imageContainer}>
@@ -44,9 +53,14 @@ export default function ImagePicker({ imageUri, setImageUri }) {
         {imageUri && <Image source={{ uri: imageUri }} style={styles.image} />}
       </View>
 
-      <OutlinedButton onPress={takeImageHandler} icon='camera'>
-        Take Image
-      </OutlinedButton>
+      <View style={styles.buttonContainer}>
+        <OutlinedButton onPress={pickImageHandler} icon='image' style={styles.button}>
+          Pick Image
+        </OutlinedButton>
+        <OutlinedButton onPress={takeImageHandler} icon='camera' style={styles.button}>
+          Take Image
+        </OutlinedButton>
+      </View>
     </View>
   );
 }
@@ -64,5 +78,12 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  button: {
+    width: '48%', 
   },
 });

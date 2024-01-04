@@ -46,12 +46,13 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   address: {
-    color: Colors.primary500,
+    color: Colors.primary800,
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 16,
   },
   button: {
     width: 200,
+    borderColor: Colors.primary400,
   },
 });

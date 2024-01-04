@@ -47,7 +47,6 @@ export default function AddPlaceScreen({ navigation }) {
       </View>
 
       <ImagePicker imageUri={imageUri} setImageUri={setImageUri} />
-
       <LocationPicker
         pickedLocation={pickedLocation}
         setPickedLocation={setPickedLocation}
