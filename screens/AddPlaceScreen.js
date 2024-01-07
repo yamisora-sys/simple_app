@@ -13,13 +13,14 @@ import ImagePicker from '../components/Places/ImagePicker';
 import LocationPicker from '../components/Places/LocationPicker';
 import { useStore } from '../store/store';
 import { Place } from '../models/place';
+import { nowNotification } from '../utils/notification';
 
 export default function AddPlaceScreen({ navigation }) {
   const { createPlaceAsync } = useStore().placeStore;
   const [title, setTitle] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [imageUri, setImageUri] = useState();
-  const [pickedLocation, setPickedLocation] = useState();
+  const [pickedLocation, setPickedLocation] = useState(null);
 
   function alertValidation(message) {
     Alert.alert('Validation error!', message);
@@ -29,9 +30,9 @@ export default function AddPlaceScreen({ navigation }) {
     if (!title) return alertValidation('Title is required.');
     if (!imageUri) return alertValidation('Image is required.');
     if (!pickedLocation) return alertValidation('Location is required.');
-
     const newPlace = new Place(title, imageUri, pickedLocation);
-    await createPlaceAsync(newPlace);
+    await createPlaceAsync(newPlace)
+    // await nowNotification("Place Saved", "Your place has been saved");
     navigation.goBack();
   }
 

@@ -10,14 +10,65 @@ import Media from './MediaScreen';
 import { Colors, Screens } from '../utils/constants';
 import PlaceDetailsScreen from './PlaceDetailsScreen';
 import { MaterialIcons } from '@expo/vector-icons';
+import { nowNotification } from '../utils/notification';
+import Constantns from 'expo-constants';
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
+import {useEffect, useState, useRef} from 'react';
 
 import Video from '../components/Places/VideoRecord';
-
+import { DeleteDB } from '../utils/database';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const PlacesStack = () => (
-  <Stack.Navigator
+export const BottomStack = () => {
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: true, 
+      })}
+    >
+      <Tab.Screen name="Places" component={AllPlacesScreen} options={({navigation}) =>{
+        return {
+          headerTitle: 'Places',
+          headerRight: () => (
+            <IconButton
+              name='add'
+              onPress={() => navigation.navigate(Screens.AddPlace)}
+              size={30}
+              color={Colors.gray700}
+            />
+          ),
+          tabBarIcon: ({ color, size }) => {
+            return <MaterialIcons name={'place'} size={size} color={color} />
+          }
+        }
+      }}/>
+      <Tab.Screen name="Media Screen" component={Media} options={({navigation}) =>{
+        return {
+          headerTitle: 'Media',
+          headerRight: () => (
+            <IconButton
+              name='camera'
+              onPress={() => navigation.navigate("VideoRecord")}
+              size={30}
+              color={Colors.gray700}
+            />
+          ),
+          tabBarIcon: ({ color, size }) => {
+            return <MaterialIcons name={'photo-library'} size={size} color={color} />
+          }
+        }
+      }
+      }/>
+    </Tab.Navigator>
+  );
+}
+
+export default function AppRoot() {
+  return (
+    <NavigationContainer>
+    <Stack.Navigator
     screenOptions={{
       headerStyle: { backgroundColor: Colors.primary500 },
       headerTintColor: Colors.gray700,
@@ -25,22 +76,11 @@ const PlacesStack = () => (
     }}
   >
     <Stack.Screen
-      name={Screens.AllPlaces}
-      component={AllPlacesScreen}
-      options={{
-        headerTitle: 'Your Favorite Places',
-        headerRight: ({ tintColor }) => {
-          const navigation = useNavigation();
-          return (
-            <IconButton
-              name='add'
-              size={24}
-              color={tintColor}
-              onPress={() => navigation.navigate(Screens.AddPlace)}
-            />
-          );
-        },
-      }}
+      name='Home'
+      component={BottomStack}
+      options={({ navigation }) => ({
+        headerShown: false,
+      })}
     />
 
     <Stack.Screen
@@ -60,43 +100,21 @@ const PlacesStack = () => (
         headerTitle: route.params.place.title,
       })}
     />
-  </Stack.Navigator>
-);
-
-const MediaScreen = () => (
-  <Stack.Navigator>
-    <Stack.Screen
+      <Stack.Screen
       name={"Media"}
       component={Media}
       options={{
         headerTitle: 'Add a new Place',
       }}
     />
+    <Stack.Screen
+      name={"VideoRecord"}
+      component={Video}
+      options={{
+        headerTitle: 'Video Record',
+      }}
+    />
   </Stack.Navigator>
-);
-
-export default function AppRoot() {
-  return (
-    <NavigationContainer>
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        headerShown: false, 
-        tabBarIcon: ({ color, size }) => {
-          let iconName;
-          if (route.name === 'Places') {
-            iconName = 'place'; 
-          } else if (route.name === 'MediaScreen') {
-            iconName = 'perm-media'; 
-          }
-
-          return <MaterialIcons name={iconName} size={size} color={color} />;
-        },
-      })}
-    >
-      <Tab.Screen name="Places" component={PlacesStack} />
-      <Tab.Screen name="MediaScreen" component={MediaScreen} />
-      <Tab.Screen name="Video" component={Video} />
-    </Tab.Navigator>
   </NavigationContainer>
   );
 }

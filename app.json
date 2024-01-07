@@ -34,7 +34,43 @@
         {
           "cameraPermission": "The app needs access to your camera in order to take photos of your favorite places."
         }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photoPermission": "The app needs access to your camera roll in order to let you choose a photo as a place image.",
+          "savePhotosPermission": "The app needs access to your camera roll in order to let you save photos of your favorite places.",
+          "isAccessMediaLocationEnabled": true
+        }
+      ],
+      [
+        "expo-av",
+        {
+          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone."
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./local/assets/notification-icon.png",
+          "color": "#ffffff",
+          "sounds": [
+            "./local/assets/notification-sound.wav",
+            "./local/assets/notification-sound-other.wav"
+          ]
+        }
       ]
-    ]
+    ],
+    "extra":{
+      "eas":{
+        "projectId": "34fd2074-236f-40e1-9750-2af2bcec9f3a"
+      }
+    }
   }
 }

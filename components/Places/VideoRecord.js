@@ -1,114 +1,82 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView } from 'react-native';
 import { useEffect, useState, useRef } from 'react';
-import { AutoFocus, Camera } from 'expo-camera';
+import { AutoFocus, Camera, CameraType } from 'expo-camera';
 import { Video } from 'expo-av';
-import { insertVideo } from '../../utils/database';
-
+import * as Device from 'expo-device';
+import * as Permissions from 'expo-permissions';
 import * as MediaLibrary from 'expo-media-library';
+import { nowNotification } from '../../utils/notification';
+export default function VideoRecord () {
+    const cameraRef = useRef(null);
+    const [Recording, setRecording] = useState(false);
+    const [videoUri , setVideoUri] = useState(null);
+    const cameraDevice = Device.deviceName;
+    const [hasPermission, setHasPermission] = useState(null);
 
-export default function App() {
-    let cameraRef = useRef();
-    const [hasCameraPermission, setHasCameraPermission] = useState();
-    const [hasMicrophonePermission, setHasMicrophonePermission] = useState();
-    const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
-    const [isRecording, setIsRecording] = useState(false);
-    const [video, setVideo] = useState();
-    const [selectedPlace, setSelectedPlace] = useState(null);
+    const onRecord = async () => {
+        setRecording(true);
+        cameraRef.current.recordAsync({ maxDuration: 3600, quality: "low" }).then((video) => {
+            setVideoUri(video.uri);
+        }).catch((error) => {
+            setRecording(false);
+            console.log(error);
+        });
+    }
+    const onStopRecord = () => {
+        cameraRef.current.stopRecording();
+        setRecording(false);
+    }
+    console.log(videoUri);
+
+    const onSave = async () => {
+        await MediaLibrary.createAssetAsync(videoUri);
+        // await nowNotification("Video Saved", "Your video has been saved");
+        setVideoUri(null);
+    }
 
     useEffect(() => {
-        (async () => {
-            const cameraPermission = await Camera.requestCameraPermissionsAsync();
-            const microphonePermission = await Camera.requestMicrophonePermissionsAsync();
-            const mediaLibraryPermission = await MediaLibrary.requestPermissionsAsync();
-
-            setHasCameraPermission(cameraPermission.status === "granted");
-            setHasMicrophonePermission(microphonePermission.status === "granted");
-            setHasMediaLibraryPermission(mediaLibraryPermission.status === "granted");
-        })();
-    }, []);
-
-    if (hasCameraPermission === undefined || hasMicrophonePermission === undefined) {
-        return <Text>Requestion permissions...</Text>
-    } else if (!hasCameraPermission) {
-        return <Text>Permission for camera not granted.</Text>
-    }
-
-    let recordVideo = () => {
-        setIsRecording(true);
-        let options = {
-            quality: "1080p",
-            maxDuration: 36000,
-            mute: false
-        };
-
-        cameraRef.current.recordAsync(options).then((recordedVideo) => {
-            setVideo(recordedVideo);
-            setIsRecording(false);
-        });
-    };
-
-    let stopRecording = () => {
-        setIsRecording(false);
-        cameraRef.current.stopRecording();
-    };
-
-    if (video) {
-        let saveVideo = async () => {
-
-            // Call the insertVideo function with the place ID and video URI
-            await insertVideo(selectedPlace.id, video.uri);
-
-            // Reset the video state
-            setVideo(undefined);
-
-            // Reload the places list after adding a video
-            await placeStore.loadPlacesAsync();
-        };
-
+        const { status } = Permissions.askAsync(Permissions.AUDIO_RECORDING);
+    })
+    if(videoUri) {
         return (
-            <SafeAreaView style={styles.container}>
-                <Video
-                    style={styles.video}
-                    source={{ uri: video.uri }}
-                    useNativeControls
-                    resizeMode="contain"
-                    isLooping
+            <View style={styles.container}>
+                <Video 
+                source={{ uri: videoUri }}
+                style={styles.video}
+                useNativeControls
+                resizeMode="contain"
                 />
-                {hasMediaLibraryPermission ? (
-                    <TouchableOpacity style={styles.btnSave} onPress={saveVideo}>
-                        <Text style={{ color: '#fff' }}>Save</Text>
-                    </TouchableOpacity>
-                ) : undefined}
-                <TouchableOpacity style={styles.btnRe} onPress={() => setVideo(undefined)}>
-                    <Text style={{ color: '#fff' }}>Re-Record</Text>
+                {/* re record */}
+                <TouchableOpacity onPress={() => setVideoUri(null)}>
+                    <Text style={styles.btnRe}>Re Record</Text>
                 </TouchableOpacity>
-                <Text> </Text>
-            </SafeAreaView>
-        );
+                {/* save */}
+                <TouchableOpacity onPress={() => onSave()}>
+                    <Text style={styles.btnSave}>Save</Text>
+                </TouchableOpacity>
+            </View>
+        )
     }
-
     return (
-        <Camera style={styles.container} ref={cameraRef}>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={isRecording ? stopRecording : recordVideo}>
-              <Text style={styles.emoji}>{isRecording ? "🟥" : "🔴"}</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.selectionContainer}>
-            {/* Example: Display a list of places and allow the user to select one */}
-            {placeStore.places.map((place) => (
-              <TouchableOpacity
-                key={place.id}
-                onPress={() => setSelectedPlace(place)}
-              >
-                <Text>{place.title}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </Camera>
-      );
-    }
-
+            <Camera 
+            deivce={cameraDevice}
+            ref={cameraRef} style={styles.video} type={CameraType.back} video={true}>
+                <View style={styles.buttonContainer}>
+                    {
+                        Recording ? (
+                            <TouchableOpacity onPress={onStopRecord}>
+                                <Text style={styles.btnRe}>Stop</Text>
+                            </TouchableOpacity>
+                        ) : (
+                            <TouchableOpacity onPress={onRecord}>
+                                <Text style={styles.btnSave}>Record</Text>
+                            </TouchableOpacity>
+                        )
+                    }
+                </View>
+            </Camera>
+    )
+}
 
 const styles = StyleSheet.create({
 
@@ -144,7 +112,8 @@ const styles = StyleSheet.create({
     },
     video: {
         flex: 1,
-        alignSelf: "stretch"
+        width: "100%",
+        height: "100%",
     },
     emoji: {
         textAlign: "center",
