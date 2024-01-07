@@ -103,7 +103,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     buttonContainer: {
-        width: "100%",
         alignSelf: "center",
         flexDirection: "row",
         position: "absolute",

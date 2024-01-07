@@ -1,15 +1,24 @@
 // LibraryScreen.js
 
-import React, { useEffect, useState } from 'react';
-import { View, FlatList, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { useCallback } from 'react';
+import { View, FlatList, Image, StyleSheet } from 'react-native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { observer } from 'mobx-react';
 import { useStore } from '../store/store';
-import * as MediaLibrary from 'expo-media-library';
 import { Video } from 'expo-av';
+
 const LibraryScreen = observer(() => {
-  const { media } = useStore().mediaStore;
+  const { media, loadMediaAsync } = useStore().mediaStore;
   const navigation = useNavigation();
+
+  useFocusEffect(
+    useCallback(() => {
+      (async () => {
+        await loadMediaAsync();
+      })();
+    }, [])
+  );
+
   return (
     <View style={styles.container}>
       {
