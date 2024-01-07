@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView, Alert } from 'react-native';
 import { useEffect, useState, useRef } from 'react';
 import { AutoFocus, Camera, CameraType } from 'expo-camera';
 import { Video } from 'expo-av';
@@ -12,15 +12,48 @@ export default function VideoRecord () {
     const [videoUri , setVideoUri] = useState(null);
     const cameraDevice = Device.deviceName;
     const [hasPermission, setHasPermission] = useState(null);
+    const [cameraPermission, setCameraPermission] = Camera.useCameraPermissions();
+    const [microphonePermission, setMicrophonePermission] = Camera.useMicrophonePermissions();
+    console.log(cameraPermission);
+    useEffect(() => {
+        if(cameraPermission === null || cameraPermission.status !== "granted") {
+            Alert.alert("Permission Needed", "Camera permission is needed to use this app", [
+                {
+                    text: "I'm Ready",
+                    onPress: () => setCameraPermission(true),
+                },
+                {
+                    text: "Cancel",
+                    onPress: () => setCameraPermission(false),
+                }
+            ]);
+        }
+        if(microphonePermission === null || microphonePermission.status !== "granted") {
+            Alert.alert("Permission Needed", "Microphone permission is needed to use this app", [
+                {
+                    text: "I'm Ready",
+                    onPress: () => setMicrophonePermission(true),
+                },
+                {
+                    text: "Cancel",
+                    onPress: () => setMicrophonePermission(false),
+                }
+            ]);
+        }
+        const { status } = Permissions.askAsync(Permissions.AUDIO_RECORDING);
+    }, [])
 
     const onRecord = async () => {
-        setRecording(true);
+        if(cameraPermission.status === "granted") {
+            setRecording(true);
         cameraRef.current.recordAsync({ maxDuration: 3600, quality: "low" }).then((video) => {
             setVideoUri(video.uri);
         }).catch((error) => {
             setRecording(false);
-            console.log(error);
+            console.error(error);
         });
+        }
+
     }
     const onStopRecord = () => {
         cameraRef.current.stopRecording();
@@ -34,9 +67,6 @@ export default function VideoRecord () {
         setVideoUri(null);
     }
 
-    useEffect(() => {
-        const { status } = Permissions.askAsync(Permissions.AUDIO_RECORDING);
-    })
     if(videoUri) {
         return (
             <View style={styles.container}>
@@ -46,14 +76,16 @@ export default function VideoRecord () {
                 useNativeControls
                 resizeMode="contain"
                 />
+                <View style={styles.buttonContainer}>
                 {/* re record */}
                 <TouchableOpacity onPress={() => setVideoUri(null)}>
-                    <Text style={styles.btnRe}>Re Record</Text>
+                    <Text style={styles.btnRerecord}>Re Record</Text>
                 </TouchableOpacity>
                 {/* save */}
                 <TouchableOpacity onPress={() => onSave()}>
                     <Text style={styles.btnSave}>Save</Text>
                 </TouchableOpacity>
+                </View>
             </View>
         )
     }
@@ -65,11 +97,17 @@ export default function VideoRecord () {
                     {
                         Recording ? (
                             <TouchableOpacity onPress={onStopRecord}>
-                                <Text style={styles.btnRe}>Stop</Text>
+                                <Text style={styles.btnRe}>
+                                    {/* icon white */}
+                                    ⏹️
+                                </Text>
                             </TouchableOpacity>
                         ) : (
                             <TouchableOpacity onPress={onRecord}>
-                                <Text style={styles.btnSave}>Record</Text>
+                                <Text style={styles.btnRe}>
+                                    {/* camera white */}
+                                    🎥
+                                </Text>
                             </TouchableOpacity>
                         )
                     }
@@ -89,18 +127,21 @@ const styles = StyleSheet.create({
     btnSave: {
         backgroundColor: "#0079AD",
         padding: 10,
-        borderRadius: 5,
         margin: 10,
-        width: "90%",
+        textAlign: "center",
+        borderRadius: 5,
+        width: "100%",
         alignItems: "center",
+        color: "#fff",
     },
     btnRe: {
-        backgroundColor: "red",
-        padding: 10,
-        borderRadius: 5,
-        margin: 10,
-        width: "90%",
+        backgroundColor: "#ffffff",
+        borderRadius: 50,
+        width: "100%",
+        padding: 20,
         alignItems: "center",
+        textAlign: "center",
+        
     },
     buttonContainer: {
         alignSelf: "center",
@@ -118,5 +159,14 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontSize: 48,
         marginBottom: 20,
+    },
+    btnRerecord:{
+        backgroundColor: "red",
+        borderRadius: 50,
+        width: "100%",
+        padding: 20,
+        alignItems: "center",
+        textAlign: "center",
+        color: "#fff",
     }
 });

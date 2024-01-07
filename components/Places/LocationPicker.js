@@ -6,7 +6,7 @@ import {
 } from 'expo-location';
 import { Colors, Screens } from '../../utils/constants';
 import OutlinedButton from '../UI/OutlinedButton';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getAddress, getMapPreviewUrl } from '../../utils/location';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
@@ -21,6 +21,7 @@ export default function LocationPicker({
   const navigation = useNavigation();
   const route = useRoute();
   const mapSelectedLocation = route.params?.mapSelectedLocation;
+  const [pickedLocationUrl, setPickedLocationUrl] = useState();
 
   async function locationChangedHandler({ latitude, longitude }) {
     if (
@@ -29,6 +30,7 @@ export default function LocationPicker({
     ) {
       return;
     }
+
     setIsGettingAddress(true);
     const savedVersion = ++locationVersion;
     const address = await getAddress(latitude, longitude);
@@ -37,14 +39,15 @@ export default function LocationPicker({
       setIsGettingAddress(false);
     }
   }
-
+  console.log(pickedLocationUrl)
+  console.log(pickedLocation)
+  console.log(mapSelectedLocation)
   useEffect(() => {
+    setPickedLocationUrl(
+      getMapPreviewUrl(mapSelectedLocation?.latitude, mapSelectedLocation?.longitude)
+    );
     if (mapSelectedLocation) locationChangedHandler(mapSelectedLocation);
   }, [mapSelectedLocation]);
-
-  const pickedLocationUrl = pickedLocation
-    ? getMapPreviewUrl(pickedLocation.latitude, pickedLocation.longitude)
-    : undefined;
 
   async function verifyPermissions() {
     if (permissionInfo.status !== PermissionStatus.GRANTED) {
