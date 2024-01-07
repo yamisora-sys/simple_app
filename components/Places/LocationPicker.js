@@ -9,7 +9,7 @@ import OutlinedButton from '../UI/OutlinedButton';
 import { useEffect, useState } from 'react';
 import { getAddress, getMapPreviewUrl } from '../../utils/location';
 import { useNavigation, useRoute } from '@react-navigation/native';
-
+import MapView, { Marker } from 'react-native-maps';
 let locationVersion = 0;
 
 export default function LocationPicker({
@@ -21,7 +21,7 @@ export default function LocationPicker({
   const navigation = useNavigation();
   const route = useRoute();
   const mapSelectedLocation = route.params?.mapSelectedLocation;
-  const [pickedLocationUrl, setPickedLocationUrl] = useState();
+  const [pickedLocationUrl, setPickedLocationUrl] = useState(null);
 
   async function locationChangedHandler({ latitude, longitude }) {
     if (
@@ -78,7 +78,25 @@ export default function LocationPicker({
     <View>
       <View style={styles.mapPreview}>
         {pickedLocationUrl && (
-          <Image source={{ uri: pickedLocationUrl }} style={styles.image} />
+          <MapView
+            style={styles.image}
+            region={{
+              latitude: pickedLocation?.latitude || 0,
+              longitude: pickedLocation?.longitude || 0,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}
+            zoomEnabled={false}
+            scrollEnabled={false}
+            minZoomLevel={0}
+          >
+            <Marker
+              coordinate={{
+                latitude: pickedLocation?.latitude || 0,
+                longitude: pickedLocation?.longitude || 0,
+              }}
+            />
+          </MapView>
         )}
         {!pickedLocationUrl && <Text>No location taken yet.</Text>}
       </View>
