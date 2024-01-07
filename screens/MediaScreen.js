@@ -1,16 +1,16 @@
 // LibraryScreen.js
 
-import React, { useCallback } from 'react';
-import { View, FlatList, Image, StyleSheet } from 'react-native';
+import React, { useCallback, useEffect } from 'react';
+import { View, FlatList, Image, StyleSheet, Alert } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { observer } from 'mobx-react';
 import { useStore } from '../store/store';
 import { Video } from 'expo-av';
-
+import { usePermissions} from 'expo-media-library'
 const LibraryScreen = observer(() => {
   const { media, loadMediaAsync } = useStore().mediaStore;
   const navigation = useNavigation();
-
+  const [permission, askForPermission] = usePermissions();
   useFocusEffect(
     useCallback(() => {
       (async () => {
@@ -18,7 +18,20 @@ const LibraryScreen = observer(() => {
       })();
     }, [])
   );
-
+  useEffect(() => {
+    if(!permission || permission.status !== "granted") {
+      Alert.alert("Permission Needed", "This app need permisson to access library", [
+        {
+          text: "Allow",
+          onPress: () => askForPermission(),
+        },
+        {
+          text: "Cancel",
+          onPress: () => askForPermission(false),
+        }
+      ]);
+    }
+  }, []);
   return (
     <View style={styles.container}>
       {

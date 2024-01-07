@@ -58,18 +58,15 @@
       [
         "expo-notifications",
         {
-          "icon": "./local/assets/notification-icon.png",
+          "icon": "./assets/icon.png",
           "color": "#ffffff",
-          "sounds": [
-            "./local/assets/notification-sound.wav",
-            "./local/assets/notification-sound-other.wav"
-          ]
+          "mode": "production"
         }
       ]
     ],
     "extra":{
       "eas":{
-        "projectId": "34fd2074-236f-40e1-9750-2af2bcec9f3a"
+        "projectId": "12854f2b-09a7-4366-9f51-2fc64a9f9a5f"
       }
     }
   }

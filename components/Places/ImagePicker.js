@@ -1,10 +1,12 @@
 import { Alert, Image, StyleSheet, View, Text } from 'react-native';
-import { launchCameraAsync, launchImageLibraryAsync, useCameraPermissions, PermissionStatus } from 'expo-image-picker';
+import { launchCameraAsync, launchImageLibraryAsync, useCameraPermissions, PermissionStatus, useMediaLibraryPermissions } from 'expo-image-picker';
 import { Colors } from '../../utils/constants';
 import OutlinedButton from '../UI/OutlinedButton';
+import { useEffect, useState } from 'react';
 
 export default function ImagePicker({ imageUri, setImageUri }) {
   const [permissionInfo, requestPermission] = useCameraPermissions();
+  const [mediaPermissionInfo, requestMediaPermission] = useMediaLibraryPermissions();
 
   async function verifyPermissions() {
     if (permissionInfo.status !== PermissionStatus.GRANTED) {
@@ -45,6 +47,42 @@ export default function ImagePicker({ imageUri, setImageUri }) {
       setImageUri(uri);
     }
   }
+
+  useEffect(() => {
+    if (!mediaPermissionInfo || mediaPermissionInfo.status !== PermissionStatus.GRANTED) {
+      Alert.alert(
+        'Grant Media Permission',
+        'You need to grant media permission to use this app.',
+        [
+          {
+            text: 'Allow',
+            onPress: () => requestMediaPermission(),
+          },
+          {
+            text: 'Cancel',
+            onPress: () => {},
+          },
+        ]
+      );
+    }
+
+    if (!permissionInfo || permissionInfo.status !== PermissionStatus.GRANTED) {
+      Alert.alert(
+        'Grant Camera Permission',
+        'You need to grant camera permission to use this app.',
+        [
+          {
+            text: 'Allow',
+            onPress: () => requestPermission(),
+          },
+          {
+            text: 'Cancel',
+            onPress: () => {},
+          },
+        ]
+      );
+    }
+  }, []);
 
   return (
     <View>

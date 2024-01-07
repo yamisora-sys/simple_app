@@ -19,28 +19,28 @@ export default function VideoRecord () {
         if(cameraPermission === null || cameraPermission.status !== "granted") {
             Alert.alert("Permission Needed", "Camera permission is needed to use this app", [
                 {
-                    text: "I'm Ready",
-                    onPress: () => setCameraPermission(true),
+                    text: "Allow",
+                    onPress: () => setCameraPermission(),
                 },
                 {
                     text: "Cancel",
-                    onPress: () => setCameraPermission(false),
+                    onPress: () => setCameraPermission(),
                 }
             ]);
         }
         if(microphonePermission === null || microphonePermission.status !== "granted") {
             Alert.alert("Permission Needed", "Microphone permission is needed to use this app", [
                 {
-                    text: "I'm Ready",
-                    onPress: () => setMicrophonePermission(true),
+                    text: "Allow",
+                    onPress: () => setMicrophonePermission(),
                 },
                 {
                     text: "Cancel",
-                    onPress: () => setMicrophonePermission(false),
+                    onPress: () => setMicrophonePermission(),
                 }
             ]);
         }
-        const { status } = Permissions.askAsync(Permissions.AUDIO_RECORDING);
+        // const { status } = Permissions.askAsync(Permissions.AUDIO_RECORDING);
     }, [])
 
     const onRecord = async () => {

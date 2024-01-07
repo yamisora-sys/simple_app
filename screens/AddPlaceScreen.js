@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Alert,
   ScrollView,
@@ -21,7 +21,6 @@ export default function AddPlaceScreen({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [imageUri, setImageUri] = useState();
   const [pickedLocation, setPickedLocation] = useState(null);
-
   function alertValidation(message) {
     Alert.alert('Validation error!', message);
   }
@@ -32,9 +31,10 @@ export default function AddPlaceScreen({ navigation }) {
     if (!pickedLocation) return alertValidation('Location is required.');
     const newPlace = new Place(title, imageUri, pickedLocation);
     await createPlaceAsync(newPlace)
-    // await nowNotification("Place Saved", "Your place has been saved");
+    await nowNotification("Place added successfully", "The place has been added to your favorite list");
     navigation.goBack();
   }
+
 
   return (
     <ScrollView style={styles.container}>
